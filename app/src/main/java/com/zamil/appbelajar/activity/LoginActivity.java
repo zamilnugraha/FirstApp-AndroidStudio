@@ -34,12 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         setTitle("Login");
 
-        if(sharedPrefManager.getSPSudahLogin()){
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            finish();
-        }
-
         register = findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override

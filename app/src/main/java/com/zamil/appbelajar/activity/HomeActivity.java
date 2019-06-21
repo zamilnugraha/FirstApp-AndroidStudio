@@ -1,5 +1,6 @@
 package com.zamil.appbelajar.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,12 +15,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.zamil.appbelajar.R;
+import com.zamil.appbelajar.helper.SharedPrefManager;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    SharedPrefManager sharedPrefManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        sharedPrefManager = new SharedPrefManager(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -29,8 +35,12 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, false);
+                startActivity(new Intent(HomeActivity.this, LoginActivity.class)
+                        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                finish();
             }
         });
 

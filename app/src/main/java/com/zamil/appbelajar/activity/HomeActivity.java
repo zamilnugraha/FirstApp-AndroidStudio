@@ -101,13 +101,17 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            Fragment fragment = new HomeFragment(HomeActivity.this);
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.fragment_layout, fragment);
+            fragmentTransaction.commit();
         } else if (id == R.id.nav_article) {
             Fragment fragment = new ArticleFragment(HomeActivity.this);
             FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
             fragmentTransaction.replace(R.id.fragment_layout, fragment);
             fragmentTransaction.commit();
         } else if (id == R.id.nav_profile) {
-
+            startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
         } else if (id == R.id.nav_logout) {
             sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, false);
             startActivity(new Intent(HomeActivity.this, LoginActivity.class)

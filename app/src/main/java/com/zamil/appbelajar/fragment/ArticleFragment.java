@@ -23,7 +23,6 @@ public class ArticleFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myFragmentView = LayoutInflater.from(mContext).inflate(R.layout.fragment_article, null, false);
-
         return myFragmentView;
     }
 }

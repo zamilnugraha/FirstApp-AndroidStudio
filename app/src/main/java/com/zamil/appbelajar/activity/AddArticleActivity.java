@@ -1,8 +1,11 @@
 package com.zamil.appbelajar.activity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -12,10 +15,15 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.zamil.appbelajar.R;
+import com.zamil.appbelajar.dao.ArticleDao;
+import com.zamil.appbelajar.fragment.ArticleFragment;
+import com.zamil.appbelajar.helper.database.DatabaseClient;
+import com.zamil.appbelajar.model.ArticleEntity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.UUID;
 
 public class AddArticleActivity extends AppCompatActivity {
 
@@ -96,11 +104,11 @@ public class AddArticleActivity extends AppCompatActivity {
     }
 
     private void addArticleSave() {
-        String titleValidation = editTextTitle.getText().toString();
-        String descriptionValidation = editTextDescription.getText().toString();
-        String phoneValidation = editTextPhoneNo.getText().toString();
-        String publishDateValidation = editTextPublishDate.getText().toString();
-        String spinnerValidation = spinner.toString();
+        final String titleValidation = editTextTitle.getText().toString();
+        final String descriptionValidation = editTextDescription.getText().toString();
+        final String phoneValidation = editTextPhoneNo.getText().toString();
+        final String publishDateValidation = editTextPublishDate.getText().toString();
+        final String spinnerValidation = spinner.toString();
         if (titleValidation.equalsIgnoreCase("")) {
             Toast.makeText(AddArticleActivity.this, "Title Empty", Toast.LENGTH_SHORT).show();
         } else if (descriptionValidation.equalsIgnoreCase("")) {
@@ -109,6 +117,38 @@ public class AddArticleActivity extends AppCompatActivity {
             Toast.makeText(AddArticleActivity.this, "Phone Empty", Toast.LENGTH_SHORT).show();
         } else if (spinnerValidation.equalsIgnoreCase("")) {
             Toast.makeText(AddArticleActivity.this, "Categoty Empty", Toast.LENGTH_SHORT).show();
+        } else if (publishDateValidation.equalsIgnoreCase("")) {
+            Toast.makeText(AddArticleActivity.this, "Publish Date Empty", Toast.LENGTH_SHORT).show();
         }
+
+        class SaveDb extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                ArticleEntity articleEntity = new ArticleEntity();
+                articleEntity.setCategory(spinnerValidation);
+                articleEntity.setDescription(descriptionValidation);
+                articleEntity.setPhoneNo(phoneValidation);
+                articleEntity.setPublishDate(publishDateValidation);
+                articleEntity.setTitle(titleValidation);
+
+                long articleId = DatabaseClient.getInstance(getApplicationContext())
+                        .getAppDatabase()
+                        .articleDao()
+                        .insert(articleEntity);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                super.onPostExecute(aVoid);
+                finish();
+                Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_LONG).show();
+
+            }
+        }
+
+        SaveDb saveDb = new SaveDb();
+        saveDb.execute();
     }
 }

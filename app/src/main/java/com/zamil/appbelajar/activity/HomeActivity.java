@@ -30,10 +30,10 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        sharedPrefManager = new SharedPrefManager(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_home);
+        sharedPrefManager = new SharedPrefManager(this);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
